@@ -31,18 +31,25 @@ fn report(line: i64, location: String, message: String) {
 fn run(_s: String) {
     let mut scanner = new_scanner(_s);
     let tokens = scanner.scan_tokens();
-    for t in &tokens {
-        println!("{}", t);
+    //for t in &tokens {
+    //    println!("{}", t);
+    //}
+    let mut parser = Parser::new(tokens);
+    let r = parser.parse();
+    match r {
+        Ok(_) => {
+            // print ast
+        }
+        Err(_) => return,
     }
-    let parser = Parser::new(tokens);
 }
 
-fn run_file(path: String) -> io::Result<()> {
+pub fn run_file(path: String) -> io::Result<()> {
     let contents = fs::read_to_string(path)?;
     Ok(run(contents))
 }
 
-fn run_prompt() -> io::Result<()> {
+pub fn run_prompt() -> io::Result<()> {
     loop {
         let mut buffer = String::new();
         print!("> ");
