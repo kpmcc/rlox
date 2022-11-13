@@ -52,8 +52,8 @@ fn get_double_token_type_with_possible_equals(c: &char, o: Option<&char>) -> Opt
                 match c {
                     '!' => Some(TokenType::BangEqual),
                     '=' => Some(TokenType::EqualEqual),
-                    '<' => Some(TokenType::GreaterEqual),
-                    '>' => Some(TokenType::LessEqual),
+                    '<' => Some(TokenType::LessEqual),
+                    '>' => Some(TokenType::GreaterEqual),
                     _ => None, // TODO
                 }
             } else {
@@ -68,8 +68,8 @@ fn get_double_token_type(c: &char) -> Option<TokenType> {
     match c {
         '!' => Some(TokenType::Bang),
         '=' => Some(TokenType::Equal),
-        '<' => Some(TokenType::Greater),
-        '>' => Some(TokenType::Less),
+        '<' => Some(TokenType::Less),
+        '>' => Some(TokenType::Greater),
         _ => None, // TODO
     }
 }

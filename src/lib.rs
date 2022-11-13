@@ -2,9 +2,11 @@ use std::fs;
 use std::io;
 use std::io::Write;
 
+use crate::interpreter::{evaluate, InterpreterError};
 use crate::parser::Parser;
 use crate::scanner::new_scanner;
 
+mod interpreter;
 mod parser;
 mod scanner;
 mod token;
@@ -37,8 +39,31 @@ fn run(_s: String) {
     let mut parser = Parser::new(tokens);
     let r = parser.parse();
     match r {
-        Ok(_) => {
-            // print ast
+        Ok(r) => {
+            if let Some(r) = r {
+                //println!("Parsed: {}", r);
+                let result = evaluate(r);
+                match result {
+                    Ok(l) => {
+                        let s = match l {
+                            parser::LiteralType::Float { lit } => {
+                                format!("{}", lit)
+                            }
+                            parser::LiteralType::String { lit } => {
+                                format!("\"{}\"", lit)
+                            }
+                            parser::LiteralType::Bool { lit } => {
+                                format!("{}", lit)
+                            }
+                            parser::LiteralType::Nil { lit } => {
+                                format!("nil")
+                            }
+                        };
+                        println!("{}", s)
+                    }
+                    Err(InterpreterError { tok, msg }) => println!("{}\n[line {}]", msg, tok.line),
+                }
+            }
         }
         Err(_) => return,
     }

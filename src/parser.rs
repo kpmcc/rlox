@@ -2,12 +2,31 @@ use crate::token::{Token, TokenType};
 use std::collections::VecDeque;
 use std::{error::Error, fmt};
 
-#[derive(Copy, Clone, Debug)]
-enum LiteralType<'a> {
+#[derive(Clone, Debug)]
+pub enum LiteralType {
     Bool { lit: bool },
     Float { lit: f64 },
-    String { lit: &'a str },
+    String { lit: String },
     Nil { lit: bool },
+}
+
+impl fmt::Display for LiteralType {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match &*self {
+            LiteralType::Bool { lit } => {
+                write!(f, "LiteralType - Bool: {}", lit)
+            }
+            LiteralType::Float { lit } => {
+                write!(f, "LiteralType - Float: {}", lit)
+            }
+            LiteralType::String { lit } => {
+                write!(f, "LiteralType - String: {}", lit)
+            }
+            LiteralType::Nil { lit } => {
+                write!(f, "LiteralType - Nil")
+            }
+        }
+    }
 }
 
 pub enum Expression {
@@ -26,6 +45,29 @@ pub enum Expression {
     Grouping {
         group: Box<Expression>,
     },
+}
+
+impl fmt::Display for Expression {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match &*self {
+            Expression::Binary {
+                left,
+                operator,
+                right,
+            } => {
+                write!(f, "({} {} {})", operator, *left, *right)
+            }
+            Expression::Unary { operator, right } => {
+                write!(f, "({} {})", operator, *right)
+            }
+            Expression::Literal { lit } => {
+                write!(f, "({})", lit)
+            }
+            Expression::Grouping { group } => {
+                write!(f, "(group {})", *group)
+            }
+        }
+    }
 }
 
 enum Operator {

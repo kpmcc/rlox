@@ -210,14 +210,14 @@ impl Scanner {
                         self.add_token(TokenType::Equal)
                     }
                 }
-                '<' => {
+                '>' => {
                     if self.tok_match('=') {
                         self.add_token(TokenType::GreaterEqual)
                     } else {
                         self.add_token(TokenType::Greater)
                     }
                 }
-                '>' => {
+                '<' => {
                     if self.tok_match('=') {
                         self.add_token(TokenType::LessEqual)
                     } else {
